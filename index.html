@@ -4,27 +4,43 @@
 <meta charset="UTF-8">
 <title>Error</title>
 <style>
-  body, html { margin:0; padding:0; width:100%; height:100%; background:#111; overflow:hidden; }
-  #video { width:100%; height:100%; object-fit:cover; }
+  body, html { margin:0; padding:0; width:100%; height:100%; background:#111; color:#fff; display:flex; justify-content:center; align-items:center; font-family:sans-serif; flex-direction:column; overflow:hidden; }
+  #intro { text-align:center; }
+  #videoContainer { display:none; width:100%; height:100%; position:fixed; top:0; left:0; }
+  video { width:100%; height:100%; object-fit:cover; }
+  button { padding:15px 30px; font-size:20px; cursor:pointer; margin-top:20px; }
 </style>
 </head>
 <body>
 
-<video id="video" autoplay loop muted>
-  <source src="pump.mp4" type="video/mp4">
-</video>
+<div id="intro">
+  <h1>⚠ ERROR 0xDEADCAFE</h1>
+  <p>Something went terribly wrong...</p>
+  <button onclick="startVideo()">Click to continue</button>
+</div>
+
+<div id="videoContainer">
+  <video id="video" loop>
+    <source src="pump.mp4" type="video/mp4">
+    Your browser does not support video.
+  </video>
+</div>
 
 <script>
 const video = document.getElementById('video');
 
-// Request fullscreen immediately
-function goFullscreen() {
-  document.documentElement.requestFullscreen?.();
+function startVideo() {
+  // Hide intro
+  document.getElementById('intro').style.display = 'none';
+  // Show video
+  document.getElementById('videoContainer').style.display = 'block';
+  // Request fullscreen
+  document.documentElement.requestFullscreen();
+  // Play with sound
   video.play();
 }
-goFullscreen();
 
-// Prevent right-click, keyboard, and text selection
+// Prevent right-click, keyboard, text selection
 document.addEventListener('contextmenu', e => e.preventDefault());
 document.addEventListener('keydown', e => e.preventDefault());
 document.addEventListener('selectstart', e => e.preventDefault());
@@ -34,7 +50,6 @@ document.addEventListener('fullscreenchange', () => {
   if (!document.fullscreenElement) {
     alert('⚠ LOST PROGRESS!');
     location.reload();
-    goFullscreen();
   }
 });
 
